@@ -218,3 +218,37 @@ request.setCharacterEncoding("UTF-8");
 ```
 
 ---
+#### 16. 리프래시(Refresh)
+- 신규회원을 추가한 후 등록성공 화면을 보여주고 1초 후에 회원목록으로 돌아간다.
+- 그 이유는 Refresh을 헤더에 설정했기 때문이다.
+```java
+response.setHeader("Refresh", "1;url=list"); 또는
+response.addHeader("Refresh", "1;url=list");
+```
+- 헤더에 리프레시를 추가하는 것 말고도 meta태그를 통해서도 가능하다.
+```html
+response.setContentType("text/html;charset=UTF-8");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>회원 등록 결과</title>");
+out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
+out.println("</head>");
+if (cnt > 0) {
+	out.println("<body><h1>등록에 성공했습니다.</h1>");
+} else {
+	out.println("<body><h1>등록에 실패했습니다.</h1>");
+}
+out.println("</body></html>");
+
+// response.setHeader("Refresh", "1;url=list");
+```
+
+---
+#### 17. 리다이렉트(Redirect)
+- 리프래시(Refresh)는 회원추가 후 결과를 브라우저에 출력한 후 회원목록으로 돌아갔다.
+- 리다이렉트(Redirect)는 결과를 출력하지 않고 즉시 회원목록으로 돌아갈 수 있다.
+- 헤더 정보의 응답 상태 코드가 '200'이 아닌 '302'로 되어있다.
+- 헤더 정보의 Location에는 이동할 페이지 URL이 있다.
+- 응답 본문도 없다.
+- 따라서, 리다이렉트(Redirect)를 하는 경우 본문 코드를 작성할 필요가 없으며, 작성해도 보내지 않는다.
+
+---
