@@ -32,6 +32,7 @@ public class MemberListServlet extends GenericServlet {
 			PrintWriter out = response.getWriter();
 			out.println("<html><head><title>회원목록</title></head>");
 			out.println("<body><h1>회원목록</h1>");
+			out.println("<a href='add'>신규 회원</a>");
 			out.println("<ul>");
 			while (rs.next()) {
 				out.println("<li>" + 
