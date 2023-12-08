@@ -6,6 +6,7 @@
  - 사실은 Servlet 인터페이스를 이해하는 것이 중요하다.
  - 서블릿 기술을 이용하여 개발하는 것을 '서블릿 프로그래밍'이라 한다.
 
+---
 #### 2. 서블릿(Servlet)
   - 서블릿을 이해하려면 'CGI'를 알아야 한다.
   - CGI(Common Gateway Interface)라하며 웹 서버와 프로그램 사이의 데이터를 주고 받는 규칙을 말한다.
@@ -13,11 +14,13 @@
   - CGI프로그램은 C, C++, Java와 같은 컴파일 언어와 Perl, PHP, Python, VBScript 등 스크립트 언어로도 작성할 수 있다.
   - 자바로 만든 CGI프로그램을 서블릿(Servlet)이라 한다.
 
+---
 #### 3. 서블릿 컨테이너(Servlet Container)
  - 서블릿만의 특징은 웹 서버와 직접 데이터를 주고 받지 않으며, 전문 프로그램에 의해 관리된다는 것이다.
  - 서블릿의 생성과 실행, 소멸 등 생명주기를 관리하는 전문 프로그램을 '서블릿 컨테이너(Servlet Container)'이라 한다.
  - 서블릿 컨테이너가 존재함에 있어 개발자는 CGI규칙을 알아야 할 필요가 없고, 서블릿과 서블릿 컨테이너 사이의 규칙을 알아야 한다.
 
+---
 #### 4. javax.servlet.Servlet 인터페이스
  - HelloWorld 클래스는 javax.servlet.Servlet 인터페이스를 구현했다.
  - 서블릿 인터페이스를 구현하려면 init(), service(), destroy(), getServletInfo(), getServletConfig() 메서드를 작성해야 한다. 
@@ -28,7 +31,6 @@
  - 서블릿의 생명주기를 서블릿 인터페이스를 구현하여 확인하였다.
 
  ---
-
  #### 5. GenericServlet 추상 클래스
  - HelloWorld2 클래스는 javax.servlet.GenericServlet 추상 클래스를 상속받았다.
  - GenericServlet 추상 클래스는 javax.servlet.Servlet 인터페이스를 구현한 클래스이다.
@@ -37,7 +39,6 @@
  - HelloWorld.java클래스에서 5가지 메서드를 구현하는 것보다 편해졌다.
 
 ---
-
 #### 6. web.xml
  - Servlet 인터페이스, GenericServlet 추상 클래스 예제를 만들면서 web.xml에 서블릿을 배치하는 것을 설명 안했다.
  - web.xml은 배치 기술서(Deployment Descriptor) 또는 'DD파일'이라 한다. 웹 애플리케이션의 배치 정보를 담고 있다.
@@ -88,7 +89,6 @@
 ```
 
 ---
-
 #### 7. CalculatorServlet 클래스
  - 문자 집합을 설정하지 않으면 아래와 같이 한글이 깨져서 출력된다. 기본값은 ISO-8859-1이다.
 ```
@@ -110,7 +110,6 @@ response.setContentType("text/plain;charset=UTF-8");
 ```
 
 ---
-
 #### 8. @WebServlet 애노테이션
  - Servlet 3.0 사양부터는 애노테이션으로 서블릿 배치 정보를 설정할 수 있다.
  - HelloWorld, HelloWorld2, CalculatorServlet 클래스에 @WebServlet을 적용했다.
@@ -156,7 +155,6 @@ public class CalculatorServlet extends GenericServlet {
 ```
 
 ---
-
 #### 9. DB 연결하여 회원목록 조회
 - DB를 연결하기 위해서 ojdbc6.jar 파일을 다운로드 한다. (https://mvnrepository.com/artifact/oracle/ojdbc6/11.2.0.3)
 - ojdbc6.jar 파일을 '/WEB-INF/lib'에 위치해놓는다.
@@ -167,7 +165,56 @@ public class CalculatorServlet extends GenericServlet {
 - 준비한 Statement로 Query를 수행하여 ResultSet을 얻는다.
 - 반드시 출력 스트림을 얻기 전에 먼저 setContentType("text.html;charset=UTF-8")를 호출한다.
 - 출력 스트림으로 html을 출력한다.
-- 사용한 자원은 반드시 해제하는 코드를 작성해야 한다. 해제는 역순으로 ResultSet, Statement, Connection 처리.
+- 사용한 자원은 반드시 해제하는 코드를 작성해야 한다. 해제는 역순으로 ResultSet > Statement > Connection 처리.
+
+--- 
+#### 10. HttpServlet 클래스
+- 클라이언트의 요청이 들어오면 서블릿 컨테이너는 service()를 호출한다.
+- HttpServlet는 GenericServlet클래스를 상속 받았다. 즉, 요청이 오면 HttpServlet의 service()가 호출된다.
+- HttpServlet의 service()는 클라이언트 요청 방식에 따라 doGet(), doPost(), doPut(), ...등을 호출한다.
 
 ---
+#### 11. GET 요청 발생
+- 브라우저 주소창에 URL을 입력하여 요청한 경우
+- <a>를 클릭하여 요청한 경우
+- <form>의 method가 'GET'이거나 없는 경우(기본값 GET)에서 요청한 경우
 
+---
+#### 12. Statement와 PreparedStatement
+|항목|Statement|PreparedStatement|
+|:-|:-|:-|
+|실행속도|질의할 때마다 컴파일|미리 컴파일<br>매개변수 값만 추가하여 서버에 전송<br>특히 여러번 반복 시, 실행속도가 빠름|
+|바이너리<br>데이터 전송|불가능|가능|
+|프로그래밍<br>편의성|SQL문에 매개변수 값이 포함되어 복잡|SQL문에 매개변수 값이 분리되어 있어 편리|
+
+---
+#### 13. 신규회원 추가
+- MemberListServlet클래스에서 '신규 회원'이라는 <a> 태그를 추가하였다.
+- MemberAddServlet클래스를 생성하고 'HttpServlet'을 상속 받았다.
+- HttpServlet의 doGet()과 doPost()를 구현하였다.
+- 회원목록 화면에서 <a>태그를 클릭하면 MemberAddServlet의 doGet()이 호출된다.
+- 회원추가 화면에서 회원 입력폼을 작성하고 '추가'버튼을 누르면 doPost()이 호출된다.
+- doGet()이 호출되면 회원 입력폼 화면을 생성하여 출력한다.
+- doPost()이 호출되면 회원 입력폼에 작성한 값을 불러와 신규회원을 등록한다.
+
+---
+#### 14. 한글 입력 깨짐
+- 신규회원을 추가할 경우 이름에 한글을 입력하고 등록하면 회원목록에서 한글이 깨져 출력된다.
+![image](https://github.com/powerqdg/JavaWeb/assets/63497408/633b0312-22f4-4415-8b33-5d3c95b32344)
+- 브라우저는 서버에 요청을 보낼 때, 브라우저의 기본 문자집합으로 인코딩하여 보낸다.
+- 서버에서는 getParameter()하기 전에 요청 데이터의 문자집합을 설정한 후 빼와야 한다.
+- 그렇지 않으면 매개변수 값이 기본적으로 'ISO-8859-1'로 인코딩 되어있다고 가정한 후 반환한다.
+```java
+request.setCharacterEncoding("UTF-8");
+```
+
+#### 15. GET 요청 매개변수의 한글 깨짐 해결책
+- setCharacterEncoding()의 호출은 쿼리스트링에서는 적용되지 않는다.
+- 톰캣 서버의 server.xml을 수정해줘야 한다.
+```xml
+<Connector connectionTimeout="20000" maxParameterCount="1000" port="8080"
+   protocol="HTTP/1.1" redirectPort="8443"
+   URIEncoding="UTF-8"/>
+```
+
+---
