@@ -1,4 +1,4 @@
-package lesson01.servlet;
+package lesson01.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
