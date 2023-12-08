@@ -157,6 +157,17 @@ public class CalculatorServlet extends GenericServlet {
 
 ---
 
+#### 9. DB 연결하여 회원목록 조회
+- DB를 연결하기 위해서 ojdbc6.jar 파일을 다운로드 한다. (https://mvnrepository.com/artifact/oracle/ojdbc6/11.2.0.3)
+- ojdbc6.jar 파일을 '/WEB-INF/lib'에 위치해놓는다.
+- lesson2.servlets.MemberListServlet 클래스를 만들고 GenericServlet를 상속한다.
+- 서블릿 배치 정보를 등록한다. (애노테이션 방법을 사용함)
+- DriverManager클래스의 registerDriver()로 오라클드라이버 객체를 등록한다.
+- DriverManager클래스에서 Connection 객체를 가져오고, Statement를 준비시킨다.
+- 준비한 Statement로 Query를 수행하여 ResultSet을 얻는다.
+- 반드시 출력 스트림을 얻기 전에 먼저 setContentType("text.html;charset=UTF-8")를 호출한다.
+- 출력 스트림으로 html을 출력한다.
+- 사용한 자원은 반드시 해제하는 코드를 작성해야 한다. 해제는 역순으로 ResultSet, Statement, Connection 처리.
 
-
+---
 
