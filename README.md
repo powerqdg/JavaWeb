@@ -252,3 +252,77 @@ out.println("</body></html>");
 - 따라서, 리다이렉트(Redirect)를 하는 경우 본문 코드를 작성할 필요가 없으며, 작성해도 보내지 않는다.
 
 ---
+#### 18. 회원정보 상세조회/수정
+- 회원목록의 이름을 출혁하는 HTML에 a태그 추가하여 회원정보 상세조회를 할 수 있도록 했다.
+- a태그를 통해 '/member/update'를 요청하면 MemberUpdateServlet의 doGet()이 호출된다.
+- 이름, 이메일을 수정하고 수정 버튼을 클릭하면 doPost()가 호출되어 DB를 통해 수정 후 회원목록으로 리다이렉트 된다.
+
+---
+#### 19. 서블릿 초기화 매개변수
+- DD파일(web.xml)의 서블릿 배치 정보에 설정하는 방법
+- 애노테이션을 사용하여 서블릿 소스 코드에 설정하는 방법
+- 되도록 소스 코드에서 분리하여 외부 파일에 두는 것을 추천한다.
+
+---
+#### 20. 서블릿 초기화 매개변수 적용
+- MemberUpdateServlet 클래스에 서블릿 초기화 매개변수를 적용할 것이다.
+- 소스 코드에서 애노테이션으로 정의했던 @WebServlet을 삭제하고, web.xml에 서블릿 배치 정보를 생성한다.
+- 소스 코드에서 DB드라이버 객체, DB드라이버 url, username, password를 서블릿 초기화 매개변수로부터 불러오도록 수정한다.
+```java
+public class MemberUpdateServlet extends HttpServlet {
+	(중략)
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		(중략)
+		try {
+			Class.forName(this.getInitParameter("driver"));
+			conn = DriverManager.getConnection(
+					this.getInitParameter("url"),
+					this.getInitParameter("username"),
+					this.getInitParameter("password"));
+```
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>JavaWeb</display-name>
+  
+  <!-- 서블릿 선언 -->
+  <servlet>
+    <servlet-name>update</servlet-name>
+    <servlet-class>lesson02.servlets.MemberUpdateServlet</servlet-class>
+    <init-param>
+      <param-name>driver</param-name>
+      <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+    </init-param>
+    <init-param>
+      <param-name>url</param-name>
+      <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
+    </init-param>
+    <init-param>
+      <param-name>username</param-name>
+      <param-value>scott</param-value>
+    </init-param>
+    <init-param>
+      <param-name>password</param-name>
+      <param-value>tiger</param-value>
+    </init-param>
+  </servlet>
+  
+  <!-- 서블릿 매핑 -->
+  <servlet-mapping>
+    <servlet-name>update</servlet-name>
+    <url-pattern>/member/update</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
+``` 
+
+
