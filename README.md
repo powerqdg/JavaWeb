@@ -19,7 +19,7 @@
  - 서블릿 컨테이너가 존재함에 있어 개발자는 CGI규칙을 알아야 할 필요가 없고, 서블릿과 서블릿 컨테이너 사이의 규칙을 알아야 한다.
 
 #### 4. javax.servlet.Servlet 인터페이스
- - HelloWorld.java클래스는 javax.servlet.Servlet 인터페이스를 구현했다.
+ - HelloWorld 클래스는 javax.servlet.Servlet 인터페이스를 구현했다.
  - 서블릿 인터페이스를 구현하려면 init(), service(), destroy(), getServletInfo(), getServletConfig() 메서드를 작성해야 한다. 
  - 각 메서드에 호출 시 메서드명을 출력하도록 작성했다.
  - 서버를 실행하고 요청을 보냈면 콘솔창에 'init'와 'service'가 출력되었다.
@@ -30,7 +30,7 @@
  ---
 
  #### 5. GenericServlet 추상 클래스
- - HelloWorld2.java클래스는 javax.servlet.GenericServlet 추상 클래스를 상속받았다.
+ - HelloWorld2 클래스는 javax.servlet.GenericServlet 추상 클래스를 상속받았다.
  - GenericServlet 추상 클래스는 javax.servlet.Servlet 인터페이스를 구현한 클래스이다.
  - GenericServlet 추상 클래스에서 불필요한 메서드는 미리 구현하고 있기 때문에 service()만 작성하면 된다.
  - 서버를 실행하고 요청을 보내면 'service'만 출력되는 것을 확인하였다.
@@ -85,6 +85,28 @@
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
 </web-app>
+```
+
+---
+
+#### 7. CalculatorServlet 클래스
+ - 문자 집합을 설정하지 않으면 아래와 같이 한글이 깨져서 출력된다. 기본값은 ISO-8859-1이다.
+```
+a=4, b=2? ???? ???.  // 의 계산결과 입니다.
+a + b = 6
+a - b = 2
+a * b = 8
+a / b = 2.0
+a % b = 0
+```
+ - 문자 집합은 두 방식으로 설정할 수 있다. 
+```java
+// 나뉘서
+response.setContentType("text/plain");
+response.setCharacterEncoding("UTF-8");
+
+// 한 번에
+response.setContentType("text/plain;charset=UTF-8");
 ```
 
 ---
