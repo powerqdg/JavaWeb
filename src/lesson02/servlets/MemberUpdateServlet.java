@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -24,8 +23,11 @@ public class MemberUpdateServlet extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "scott", "tiger");
+			Class.forName(this.getInitParameter("driver"));
+			conn = DriverManager.getConnection(
+					this.getInitParameter("url"),
+					this.getInitParameter("username"),
+					this.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO, EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE FROM MEMBERS WHERE MNO = ?");
 			stmt.setInt(1, Integer.parseInt(request.getParameter("mno")));
 			rs = stmt.executeQuery();
