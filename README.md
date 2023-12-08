@@ -111,4 +111,13 @@ response.setContentType("text/plain;charset=UTF-8");
 
 ---
 
+#### 8. @WebServlet 애노테이션
+ - Servlet 3.0 사양부터는 애노테이션으로 서블릿 배치 정보를 설정할 수 있다.
+ - HelloWorld, HelloWorld2, CalculatorServlet 클래스에 @WebServlet을 적용했다.
+ - web.xml에서도 등록했던 서블릿의 배치 정보를 지워보고 정상작동하는지 확인했다.
+
+---
+
+
+
 
