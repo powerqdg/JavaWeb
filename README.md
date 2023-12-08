@@ -176,8 +176,8 @@ public class CalculatorServlet extends GenericServlet {
 ---
 #### 11. GET 요청 발생
 - 브라우저 주소창에 URL을 입력하여 요청한 경우
-- <a>를 클릭하여 요청한 경우
-- <form>의 method가 'GET'이거나 없는 경우(기본값 GET)에서 요청한 경우
+- a태그를 클릭하여 요청한 경우
+- form태그의 method가 'GET'이거나 없는 경우(기본값 GET)에서 요청한 경우
 
 ---
 #### 12. Statement와 PreparedStatement
