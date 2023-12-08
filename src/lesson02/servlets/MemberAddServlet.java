@@ -47,7 +47,11 @@ public class MemberAddServlet extends HttpServlet {
 			stmt.setString(3, request.getParameter("mname"));
 			int cnt = stmt.executeUpdate();
 			
-			response.sendRedirect("list");
+			if (cnt > 0) {
+				response.sendRedirect("list");
+			} else {
+				throw new Error("등록하는데 문제가 발생했습니다.");
+			}
 			/*
 			response.setContentType("text/html;charset=UTF-8");
 			PrintWriter out = response.getWriter();
