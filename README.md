@@ -37,3 +37,56 @@
  - HelloWorld.java클래스에서 5가지 메서드를 구현하는 것보다 편해졌다.
 
 ---
+
+#### 6. web.xml
+ - Servlet 인터페이스, GenericServlet 추상 클래스 예제를 만들면서 web.xml에 서블릿을 배치하는 것을 설명 안했다.
+ - web.xml은 배치 기술서(Deployment Descriptor) 또는 'DD파일'이라 한다. 웹 애플리케이션의 배치 정보를 담고 있다.
+ - 서블릿을 만들면 서블릿 컨테이너가 찾을 수 있도록 web.xml에 서블릿을 선언해주어야 한다.
+ - 아래 그림과 같이 서블릿명과 서블릿 클래스를 정의하는 '서블릿 선언' 부분과 서블릿명과 url패턴을 정의하는 '서블릿 매핑'부분을 작성했었다.
+```html
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>JavaWeb</display-name>
+  
+  <!-- 서블릿 선언 -->
+  <servlet>
+    <servlet-name>hello</servlet-name>
+    <servlet-class>lesson01.servlet.HelloWorld</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>hello2</servlet-name>
+    <servlet-class>lesson01.servlet.HelloWorld2</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>calc</servlet-name>
+    <servlet-class>lesson01.servlet.CalculatorServlet</servlet-class>
+  </servlet>
+  
+  <!-- 서블릿 매핑 -->
+  <servlet-mapping>
+    <servlet-name>hello</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>hello2</servlet-name>
+    <url-pattern>/hello2</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>calc</servlet-name>
+    <url-pattern>/calc</url-pattern>
+  </servlet-mapping>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
+```
+
+---
+
+
