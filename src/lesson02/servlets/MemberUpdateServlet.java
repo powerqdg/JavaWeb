@@ -2,7 +2,6 @@ package lesson02.servlets;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -28,11 +27,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			conn = (Connection)sc.getAttribute("conn");
 			stmt = conn.prepareStatement("SELECT MNO, EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE FROM MEMBERS WHERE MNO = ?");
 			stmt.setInt(1, Integer.parseInt(request.getParameter("mno")));
 			rs = stmt.executeQuery();
@@ -56,7 +51,6 @@ public class MemberUpdateServlet extends HttpServlet {
 		} finally {
 			try {if (rs != null) rs.close();} catch (Exception e) {}
 			try {if (stmt != null) stmt.close();} catch (Exception e) {}
-			try {if (conn != null) conn.close();} catch (Exception e) {}
 		}
 	}
 	
@@ -68,11 +62,7 @@ public class MemberUpdateServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			conn = (Connection)sc.getAttribute("conn");
 			stmt = conn.prepareStatement("UPDATE MEMBERS SET MNAME = ?, EMAIL = ?, MOD_DATE = SYSDATE WHERE MNO = ?");
 			stmt.setString(1, request.getParameter("mname"));
 			stmt.setString(2, request.getParameter("email"));
@@ -87,7 +77,6 @@ public class MemberUpdateServlet extends HttpServlet {
 			rd.forward(request, response);
 		} finally {
 			try {if (stmt != null) stmt.close();} catch (Exception e) {}
-			try {if (conn != null) conn.close();} catch (Exception e) {}
 		}
 	}
 }

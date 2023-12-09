@@ -1,9 +1,7 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
@@ -33,11 +31,7 @@ public class MemberAddServlet extends HttpServlet {
 		
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			conn = (Connection)sc.getAttribute("conn");
 			stmt = conn.prepareStatement("INSERT INTO MEMBERS VALUES(MNO_SEQ.nextVal, ?, ?, ?, SYSDATE, SYSDATE)");
 			stmt.setString(1, request.getParameter("email"));
 			stmt.setString(2, request.getParameter("password"));
@@ -52,7 +46,6 @@ public class MemberAddServlet extends HttpServlet {
 			rd.forward(request, response);
 		} finally {
 			try {if (stmt != null) stmt.close();} catch (Exception e) {}
-			try {if (conn != null) conn.close();} catch (Exception e) {}
 		}
 		
 	}
