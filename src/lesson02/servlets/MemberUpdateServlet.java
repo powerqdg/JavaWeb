@@ -49,7 +49,10 @@ public class MemberUpdateServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdate.jsp");
 			rd.include(request, response);
 		} catch (Exception e) {
-			throw new ServletException(e);
+			// throw new ServletException(e);
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+			rd.forward(request, response);
 		} finally {
 			try {if (rs != null) rs.close();} catch (Exception e) {}
 			try {if (stmt != null) stmt.close();} catch (Exception e) {}
@@ -78,7 +81,10 @@ public class MemberUpdateServlet extends HttpServlet {
 			
 			response.sendRedirect("list");
 		} catch (Exception e) {
-			throw new ServletException(e);
+			// throw new ServletException(e);
+			request.setAttribute("error", e);
+			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
+			rd.forward(request, response);
 		} finally {
 			try {if (stmt != null) stmt.close();} catch (Exception e) {}
 			try {if (conn != null) conn.close();} catch (Exception e) {}
