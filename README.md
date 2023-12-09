@@ -77,14 +77,7 @@
     <url-pattern>/calc</url-pattern>
   </servlet-mapping>
   
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+  (중략...)
 </web-app>
 ```
 
@@ -128,7 +121,7 @@ import javax.servlet.annotation.WebServlet;
 
 @WebServlet("/calc")
 public class CalculatorServlet extends GenericServlet {
-	  (중략)
+	  (중략...)
 	}
 }
 
@@ -143,14 +136,7 @@ public class CalculatorServlet extends GenericServlet {
   <!-- 서블릿 매핑 -->
   
   
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+  (중략...)
 </web-app>
 ```
 
@@ -232,11 +218,7 @@ PrintWriter out = response.getWriter();
 out.println("<html><head><title>회원 등록 결과</title>");
 out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 out.println("</head>");
-if (cnt > 0) {
-	out.println("<body><h1>등록에 성공했습니다.</h1>");
-} else {
-	out.println("<body><h1>등록에 실패했습니다.</h1>");
-}
+out.println("<body><h1>등록에 성공했습니다.</h1>");
 out.println("</body></html>");
 
 // response.setHeader("Refresh", "1;url=list");
@@ -271,10 +253,10 @@ out.println("</body></html>");
 - 소스 코드에서 DB드라이버 객체, DB드라이버 url, username, password를 서블릿 초기화 매개변수로부터 불러오도록 수정한다.
 ```java
 public class MemberUpdateServlet extends HttpServlet {
-	(중략)
+	(중략...)
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		(중략)
+		(중략...)
 		try {
 			Class.forName(this.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
@@ -315,14 +297,7 @@ public class MemberUpdateServlet extends HttpServlet {
     <url-pattern>/member/update</url-pattern>
   </servlet-mapping>
   
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+  (중략...)
 </web-app>
 ``` 
 
@@ -346,7 +321,7 @@ public class MemberUpdateServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		(중략)
+		(중략...)
 		try {
 			ServletContext sc = this.getServletContext();
 			Class.forName(sc.getInitParameter("driver"));
@@ -354,7 +329,7 @@ public class MemberUpdateServlet extends HttpServlet {
 					sc.getInitParameter("url"),
 					sc.getInitParameter("username"),
 					sc.getInitParameter("password"));
-        (중략)  
+        (중략...)  
 ```
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -378,14 +353,78 @@ public class MemberUpdateServlet extends HttpServlet {
     <param-value>tiger</param-value>
   </context-param>
   
-  <welcome-file-list>
-    <welcome-file>index.html</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-  </welcome-file-list>
+  (중략...)
+</web-app>
+```
+---
+#### 23. 필터
+- 필터는 서블릿 실행 전후에 어떤 작업을 하고자 할때 사용하는 기술이다.
+- 사전 작업: 문자집합 설정, 압축해제, 암호화된 데이터 복원, 로그 작성, 사용자 검증, 사용권한 확인 등
+- 사후 작업: 응답 데이터 압축, 응답 데이터 암호화, 데이터 형식 변환 등
+- DD파일(web.xml) 또는 애노테이션으로 배치 가능하다.
+
+```java
+package lesson02.filters;
+
+import java.io.IOException;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+
+public class CharacterEncodingFilter implements Filter {
+	FilterConfig filterConfig;
+	
+	@Override
+	public void destroy() {}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
+
+		// 서블릿이 실행되기 전에 해야 할 작업
+		request.setCharacterEncoding("UTF-8");
+
+		// 다음 필터 실행
+		chain.doFilter(request, response);
+		
+		// 서블릿이 실행되기 후에 해야 할 작업
+		
+	}
+
+	@Override
+	public void init(FilterConfig filterConfig) throws ServletException {
+		this.filterConfig = filterConfig;
+	}
+
+}
+
+```
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>JavaWeb</display-name>  
+  (중략...)
+  
+  <!-- 필터 선언 -->
+  <filter>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <filter-class>lesson02.filters.CharacterEncodingFilter</filter-class>
+    <init-param>
+      <param-name>encoding</param-name>
+      <param-value>UTF-8</param-value>
+    </init-param>
+  </filter>
+  <!-- 필터 URL 매핑 -->
+  <filter-mapping>
+    <filter-name>CharacterEncodingFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  (중략...)
 </web-app>
 ```
 
