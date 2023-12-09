@@ -259,6 +259,7 @@ out.println("</body></html>");
 
 ---
 #### 19. 서블릿 초기화 매개변수
+- 매개변수가 선언된 서블릿에서만 사용할 수 있다.
 - DD파일(web.xml)의 서블릿 배치 정보에 설정하는 방법
 - 애노테이션을 사용하여 서블릿 소스 코드에 설정하는 방법
 - 되도록 소스 코드에서 분리하여 외부 파일에 두는 것을 추천한다.
@@ -325,4 +326,67 @@ public class MemberUpdateServlet extends HttpServlet {
 </web-app>
 ``` 
 
+---
+#### 21. 컨텍스트 초기화 매개변수
+- 컨텍스트 초기화 매개변수는 모든 서블릿이 사용할 수 있다.
+- 모든 서블릿에서 따로 선언해주던 JDBC 드라이버, DB연결 정보를 편리하게 설정할 수 있다.
+- DD파일(web.xml)에서 서블릿에 설정했던 init-param을 분리하여 context-param으로 다시 설정한다.
+- 서블릿 선언과 서블릿 URL매핑 설정을 삭제하고 소스 코드에 애노테이션 방식으로 재설정 한다.
 
+---
+#### 22. 컨텍스트 초기화 매개변수 적용
+- MemberUpdateServlet에 우선적으로 적용한다.
+- MemberAddServlet, MemberListServlet도 적용한다.
+- MemberListServlet의 경우 GenericServlet을 HttpServlet으로 수정한다.
+- 회원삭제 서블릿을 만든다.
+```java
+@WebServlet("/member/update")
+public class MemberUpdateServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		(중략)
+		try {
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(
+					sc.getInitParameter("url"),
+					sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
+        (중략)  
+```
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>JavaWeb</display-name>
+  
+  <context-param>
+    <param-name>driver</param-name>
+    <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+  </context-param>
+  <context-param>
+    <param-name>url</param-name>
+    <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
+  </context-param>
+  <context-param>
+    <param-name>username</param-name>
+    <param-value>scott</param-value>
+  </context-param>
+  <context-param>
+    <param-name>password</param-name>
+    <param-value>tiger</param-value>
+  </context-param>
+  
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+</web-app>
+```
+
+---
