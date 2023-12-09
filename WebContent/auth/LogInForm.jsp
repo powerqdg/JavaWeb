@@ -4,19 +4,17 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>회원등록</title>
+<title>로그인</title>
 </head>
 <body>
 <jsp:include page="/Header.jsp"/>
-<h1>회원등록</h1>
-<form action="add" method="post">
-<label for="mname">이름: </label>
-<input id="mname" type="text" name="mname"><br>
+<h1>로그인</h1>
+<form action="login" method="post">
 <label for="email">이메일: </label>
 <input id="email" type="text" name="email"><br>
 <label for="password">비밀번호: </label>
 <input id="password" type="password" name="password"><br>
-<input type="submit" value="등록">
+<input type="submit" value="로그인">
 <input type="reset" value="취소">
 </form>
 <jsp:include page="/Tail.jsp"/>

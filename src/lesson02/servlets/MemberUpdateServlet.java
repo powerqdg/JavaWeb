@@ -42,7 +42,7 @@ public class MemberUpdateServlet extends HttpServlet {
 					.setModDate(rs.getDate("MOD_DATE")));
 			
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdate.jsp");
-			rd.include(request, response);
+			rd.forward(request, response);
 		} catch (Exception e) {
 			// throw new ServletException(e);
 			request.setAttribute("error", e);
