@@ -7,6 +7,7 @@
 <title>회원등록</title>
 </head>
 <body>
+<jsp:include page="/Header.jsp"/>
 <h1>회원등록</h1>
 <form action="add" method="post">
 <label for="mname">이름: </label>
@@ -18,5 +19,6 @@
 <input type="submit" value="등록">
 <input type="reset" value="취소">
 </form>
+<jsp:include page="/Tail.jsp"/>
 </body>
 </html>
