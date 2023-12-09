@@ -268,3 +268,39 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - 이 서블릿은 어떤 요청에 의해 생성되는 것이 아니기 때문에 load-on-startup태그로 웹 애플리케이션 시작 시 자동으로 생성되도록 했다.
 
 ---
+#### 29. HttpSession 보관소 활용
+- 로그인, 로그아웃 기능을 추가하여 HttpSession 보관소 활용 해본다.
+- 로그인을 했을 때 Header.jsp에 로그인한 사용자의 이름이 나타나고, 로그아웃 버튼을 통해 HttpSession 보관소에 들어있는 사용자를 삭제한다.
+
+---
+#### 30. ServletRequest 보관소 활용
+- 로그인, 회원 목록 출력 등 ServletRequest 보관소를 통해 데이터를 이미 공유시키고 있었다.
+- LoginServlet와 LogInForm.jsp 사이에서 doGet()의 매개변수를 그대로 넘겨주고 있다.
+```java
+@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInForm.jsp");
+		rd.forward(request, response);
+	}
+```
+
+---
+#### 31. JspContext 보관소 활용
+- JspContext 보관소는 JSP 페이지를 실행할 때 생성되고, 완료되면 사라진다.
+- JSP 페이지 내부에서만 사용될 데이터를 공유할 때 사용한다.
+- JspContext 보관소를 통해 데이터를 공유하기 원하는 자는 '커스텀 태그 핸들러'이다.
+- '커스텀 태그 핸들러'는 MVC아키텍처로 개발 시에는 별 필요가 없다.
+
+---
+#### 32. JSP 액션 태그
+- JSP 페이지를 작성할 때, 가능한 자바 코드의 삽입을 최소화하는 것이 유지 보수에 좋다.
+- 이를 위해 JSP에서는 다양한 JSP 전용 태그를 제공하고 있으며 이 태그 집합을 'JSP 액선'이라 한다.
+
+---
+#### 33. JSP 액션 태그의 사용
+- 뷰 컴포넌트(.jsp)에서 자바 코드를 JSP 액션 태그로 수정한다.
+- jsp:useBean 액션 태그는 application, session, request, page 보관소에 저장된 자바 객체를 꺼낼 수 있다.
+- 만약 보관소에 저장된 객체가 없는 경우 새로 생성하여 해당 보관소에 저장한다.
+- 그 이유로 Header.jsp에서 로그인 여부를 Member객체의 존재 여부가 아니라 Member.getEamil()로 수정했다.
+
+---
