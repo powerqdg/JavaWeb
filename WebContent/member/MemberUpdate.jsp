@@ -1,4 +1,3 @@
-<%@ page import="lesson02.vo.Member" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -10,7 +9,7 @@
 <body>
 <jsp:include page="/Header.jsp"/>
 <h1>회원수정</h1>
-<% Member member = (Member)request.getAttribute("member"); %>
+<jsp:useBean id="member" scope="request" class="lesson02.vo.Member"/>
 <form action="update" method="post">
 <label for="mno">번호: <%=member.getMno() %></label><br>
 <label for="mname">이름: </label>

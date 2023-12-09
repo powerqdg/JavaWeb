@@ -1,5 +1,4 @@
 <%@ page import="lesson02.vo.Member" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -12,7 +11,7 @@
 <jsp:include page="/Header.jsp"/>
 <h1>회원목록</h1>
 <p><a href="add">신규회원</a></p>
-<% ArrayList<Member> members = (ArrayList<Member>)request.getAttribute("members"); %>
+<jsp:useBean id="members" scope="request" class="java.util.ArrayList" type="java.util.ArrayList<lesson02.vo.Member>"/>
 <% for (Member member : members) { %>
 <%=member.getMno() %>,
 <a href="update?mno=<%=member.getMno() %>"><%=member.getMname() %></a>, 
