@@ -16,8 +16,8 @@
 <input id="mname" type="text" name="mname" value=<%=member.getMname() %>><br>
 <label for="email">이메일: </label>
 <input id="email" type="text" name="email" value=<%=member.getEmail() %>><br>
-<label for="email">가입일: <%=member.getCreDate() %></label><br>
-<label for="email">수정일: <%=member.getModDate() %></label><br>
+<label>가입일: <%=member.getCreDate() %></label><br>
+<label>수정일: <%=member.getModDate() %></label><br>
 <input type="submit" value="수정">
 <input type="reset" value="취소">
 </form>
