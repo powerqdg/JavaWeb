@@ -1,18 +1,20 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import lesson02.vo.Member;
 
 @WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
@@ -37,18 +39,15 @@ public class MemberUpdateServlet extends HttpServlet {
 			rs.next();
 			
 			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<html><head><title>회원수정</title></head>");
-			out.println("<body><h1>회원수정</h1>");
-			out.println("<form action='update' method='post'>");
-			out.println("<label for='mno'>번호: </label><input type='text' id='mno' name='mno' value='" + rs.getInt("MNO") + "' readonly><br>");
-			out.println("<label for='mname'>이름: </label><input type='text' id='mname' name='mname' value='" + rs.getString("MNAME") + "'><br>");
-			out.println("<label for='email'>이메일: </label><input type='text' id='email' name='email' value='" + rs.getString("EMAIL") + "'><br>");
-			out.println("<span>가입일: " + rs.getDate("CRE_DATE") + "</span><br>");
-			out.println("<span>수정일: " + rs.getDate("MOD_DATE") + "</span><br>");
-			out.println("<input type='submit' value='수정'><input type='reset' value='취소'>");
-			out.println("</form>");
-			out.println("</body></html>");
+			request.setAttribute("member", new Member()
+					.setMno(rs.getInt("MNO"))
+					.setMname(rs.getString("MNAME"))
+					.setEmail(rs.getString("EMAIL"))
+					.setCreDate(rs.getDate(("CRE_DATE")))
+					.setModDate(rs.getDate("MOD_DATE")));
+			
+			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdate.jsp");
+			rd.include(request, response);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {

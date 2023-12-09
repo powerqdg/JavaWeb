@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,16 +21,8 @@ public class MemberAddServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		PrintWriter out = response.getWriter();
-		out.println("<html><head><title>회원추가</title></head>");
-		out.println("<body><h1>회원추가</h1>");
-		out.println("<form action='add' method='post'>");
-		out.println("<label for='mname'>이름: </label><input type='text' id='mname' name='mname'><br>");
-		out.println("<label for='email'>이메일: </label><input type='text' id='email' name='email'><br>");
-		out.println("<label for='password'>비밀번호: </label><input type='password' id='password' name='password'><br>");
-		out.println("<input type='submit' value='추가'><input type='reset' value='취소'>");
-		out.println("</form>");
-		out.println("</body></html>");
+		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberAdd.jsp");
+		rd.include(request, response);
 	}
 	
 	@Override
@@ -52,19 +45,6 @@ public class MemberAddServlet extends HttpServlet {
 			stmt.executeUpdate();
 			
 			response.sendRedirect("list");
-			/*
-			response.setContentType("text/html;charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<html><head><title>회원 등록 결과</title></head>");
-			if (cnt > 0) {
-				out.println("<body><h1>등록에 성공했습니다.</h1>");
-			} else {
-				out.println("<body><h1>등록에 실패했습니다.</h1>");
-			}
-			out.println("</body></html>");
-			
-			response.setHeader("Refresh", "5;url=list");
-			*/
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
