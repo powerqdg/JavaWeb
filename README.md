@@ -333,8 +333,36 @@ public class MemberUpdateServlet extends HttpServlet {
 ```
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" ve등
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>JavaWeb</display-name>
+  
+  <context-param>
+    <param-name>driver</param-name>
+    <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+  </context-param>
+  <context-param>
+    <param-name>url</param-name>
+    <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
+  </context-param>
+  <context-param>
+    <param-name>username</param-name>
+    <param-value>scott</param-value>
+  </context-param>
+  <context-param>
+    <param-name>password</param-name>
+    <param-value>tiger</param-value>
+  </context-param>
+  
+  (중략...)
+</web-app>
+```
+---
+#### 23. 필터
+- 필터는 서블릿 실행 전후에 어떤 작업을 하고자 할때 사용하는 기술이다.
+- 사전 작업: 문자집합 설정, 압축해제, 암호화된 데이터 복원, 로그 작성, 사용자 검증, 사용권한 확인 등
 - 사후 작업: 응답 데이터 압축, 응답 데이터 암호화, 데이터 형식 변환 등
+- DD파일(web.xml) 또는 애노테이션으로 배치 가능하다.
+
 ```java
 package lesson02.filters;
 
@@ -399,3 +427,5 @@ public class CharacterEncodingFilter implements Filter {
   (중략...)
 </web-app>
 ```
+
+---
