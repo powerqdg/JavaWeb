@@ -54,27 +54,11 @@
     <servlet-name>hello</servlet-name>
     <servlet-class>lesson01.servlet.HelloWorld</servlet-class>
   </servlet>
-  <servlet>
-    <servlet-name>hello2</servlet-name>
-    <servlet-class>lesson01.servlet.HelloWorld2</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>calc</servlet-name>
-    <servlet-class>lesson01.servlet.CalculatorServlet</servlet-class>
-  </servlet>
   
   <!-- 서블릿 매핑 -->
   <servlet-mapping>
     <servlet-name>hello</servlet-name>
     <url-pattern>/hello</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>hello2</servlet-name>
-    <url-pattern>/hello2</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>calc</servlet-name>
-    <url-pattern>/calc</url-pattern>
   </servlet-mapping>
   
   (중략...)
@@ -97,7 +81,6 @@ a % b = 0
 // 나뉘서
 response.setContentType("text/plain");
 response.setCharacterEncoding("UTF-8");
-
 // 한 번에
 response.setContentType("text/plain;charset=UTF-8");
 ```
@@ -107,38 +90,6 @@ response.setContentType("text/plain;charset=UTF-8");
  - Servlet 3.0 사양부터는 애노테이션으로 서블릿 배치 정보를 설정할 수 있다.
  - HelloWorld, HelloWorld2, CalculatorServlet 클래스에 @WebServlet을 적용했다.
  - web.xml에서도 등록했던 서블릿의 배치 정보를 지워보고 정상 작동하는지 확인했다.
-```java
-package lesson01.servlet;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-
-import javax.servlet.GenericServlet;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebServlet;
-
-@WebServlet("/calc")
-public class CalculatorServlet extends GenericServlet {
-	  (중략...)
-	}
-}
-
-```
-```html
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>JavaWeb</display-name>
-  
-  <!-- 서블릿 선언 -->
-  
-  <!-- 서블릿 매핑 -->
-  
-  
-  (중략...)
-</web-app>
-```
 
 ---
 #### 9. DB 연결하여 회원목록 조회
@@ -211,17 +162,9 @@ request.setCharacterEncoding("UTF-8");
 response.setHeader("Refresh", "1;url=list"); 또는
 response.addHeader("Refresh", "1;url=list");
 ```
-- 헤더에 리프레시를 추가하는 것 말고도 meta태그를 통해서도 가능하다.
+- 헤더에 리프레시를 추가하는 것 말고도 head태그 사이의 meta태그를 통해서도 가능하다.
 ```html
-response.setContentType("text/html;charset=UTF-8");
-PrintWriter out = response.getWriter();
-out.println("<html><head><title>회원 등록 결과</title>");
 out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
-out.println("</head>");
-out.println("<body><h1>등록에 성공했습니다.</h1>");
-out.println("</body></html>");
-
-// response.setHeader("Refresh", "1;url=list");
 ```
 
 ---
@@ -251,55 +194,6 @@ out.println("</body></html>");
 - MemberUpdateServlet 클래스에 서블릿 초기화 매개변수를 적용할 것이다.
 - 소스 코드에서 애노테이션으로 정의했던 @WebServlet을 삭제하고, web.xml에 서블릿 배치 정보를 생성한다.
 - 소스 코드에서 DB드라이버 객체, DB드라이버 url, username, password를 서블릿 초기화 매개변수로부터 불러오도록 수정한다.
-```java
-public class MemberUpdateServlet extends HttpServlet {
-	(중략...)
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		(중략...)
-		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					this.getInitParameter("url"),
-					this.getInitParameter("username"),
-					this.getInitParameter("password"));
-```
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>JavaWeb</display-name>
-  
-  <!-- 서블릿 선언 -->
-  <servlet>
-    <servlet-name>update</servlet-name>
-    <servlet-class>lesson02.servlets.MemberUpdateServlet</servlet-class>
-    <init-param>
-      <param-name>driver</param-name>
-      <param-value>oracle.jdbc.driver.OracleDriver</param-value>
-    </init-param>
-    <init-param>
-      <param-name>url</param-name>
-      <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
-    </init-param>
-    <init-param>
-      <param-name>username</param-name>
-      <param-value>scott</param-value>
-    </init-param>
-    <init-param>
-      <param-name>password</param-name>
-      <param-value>tiger</param-value>
-    </init-param>
-  </servlet>
-  
-  <!-- 서블릿 매핑 -->
-  <servlet-mapping>
-    <servlet-name>update</servlet-name>
-    <url-pattern>/member/update</url-pattern>
-  </servlet-mapping>
-  
-  (중략...)
-</web-app>
-``` 
 
 ---
 #### 21. 컨텍스트 초기화 매개변수
@@ -314,48 +208,7 @@ public class MemberUpdateServlet extends HttpServlet {
 - MemberAddServlet, MemberListServlet도 적용한다.
 - MemberListServlet의 경우 GenericServlet을 HttpServlet으로 수정한다.
 - 회원삭제 서블릿을 만든다.
-```java
-@WebServlet("/member/update")
-public class MemberUpdateServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
 
-	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		(중략...)
-		try {
-			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(
-					sc.getInitParameter("url"),
-					sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
-        (중략...)  
-```
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>JavaWeb</display-name>
-  
-  <context-param>
-    <param-name>driver</param-name>
-    <param-value>oracle.jdbc.driver.OracleDriver</param-value>
-  </context-param>
-  <context-param>
-    <param-name>url</param-name>
-    <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
-  </context-param>
-  <context-param>
-    <param-name>username</param-name>
-    <param-value>scott</param-value>
-  </context-param>
-  <context-param>
-    <param-name>password</param-name>
-    <param-value>tiger</param-value>
-  </context-param>
-  
-  (중략...)
-</web-app>
-```
 ---
 #### 23. 필터
 - 필터는 서블릿 실행 전후에 어떤 작업을 하고자 할때 사용하는 기술이다.
@@ -363,69 +216,91 @@ public class MemberUpdateServlet extends HttpServlet {
 - 사후 작업: 응답 데이터 압축, 응답 데이터 암호화, 데이터 형식 변환 등
 - DD파일(web.xml) 또는 애노테이션으로 배치 가능하다.
 
+---
+#### 24. MVC아키텍처
+- MVC란 모델(Model), 뷰(View), 컨트롤러(Controller)를 구성요소로 하는 아키텍처이다.
+- 새로운 기술이 등장하면 이를 활용한 시스템이 만들어지게 되고, 시스템을 만들다 보면 그 기술의 단점이 드러난다.
+- MVC아키텍처는 실무 웹 애플리케이션 개발에 있어 최선의 관행으로 알려져있어 널리 사용되고 있다.
+- 모델(Model): 데이터 저장소와 연동하여 사용자가 입력 또는 사용자에게 출력할 데이터를 다루는 일을 한다.
+- 뷰(View): 모델이 처리한 데이터나 그 작업 결과를 가지고 사용자에게 출력할 화면을 만드는 일을 한다.
+- 컨트롤러(Controller):는 모델을 호출하는 일을 하고, 모델의 작업 결과를 뷰에게 전달한다.
+
+---
+#### 25. JSP
+- JSP란 Java Server Page의 약자이다.
+- 서블릿의 단점을 보완하기 위한 기술이다.
+- JSP엔진에 의해 .jsp파일은 .java파일이 되고 자바 컴파일러에 의해 .class이 되어 구동된다.
+- 서블릿에서 작성하던 out.println("<html><head><title>회원목록")이런 코드를 더이상 작성할 필요가 없다.
+- JSP엔진이 생성한 .java파일은 'HttpJspPage'인터페이스를 구현하고 있으며 최종적으로는 Servlet을 구현하고 있다.
+
+---
+#### 26. JSP 전용 태그
+- 스크립트릿(Scriptlet Elements): JSP페이지 안에 자바 코드를 넣을 때 사용<br> "<% 자바 코드 %>"
+- 선언문(Declarations): 서블릿 클래스의 멤버(변수나 메서드)를 선언할 때 사용<br> "<%! 멤버 변수 및 메서드 선언 %>"
+- 표현식(Expressions) 문자열을 출력할 때 사용<br> "<%= 결과를 반환하는 자바 표현식 %>"
+
+---
+#### 26. MVC아키텍처 적용
+- 모델(Model) 객체 생성
+- 뷰(View) 객체 생성
+- 서블릿에서 뷰(View) 코드 제거
+- RequestDispatcher을 이용한 포워드(forward), 인클루드(include)을 통한 제어권 위임
+- 인클루딩의 경우 위임이 끝난 후 제어권을 가져온다.
+- 포워딩의 경우 위임이 끝난 후 제어권을 다시 가져오지 않는다.
+- 회원등록, 회원수정 화면으로 접근하는 경우 각 페이지로 인클루딩 한다.
+- 에러가 발생하면 에러 페이지로 포워딩 한다.
+- jsp페이지에서 jsp전용태그를 통해 Header, Tail 페이지를 인클루드 할 수 있다.
+
+---
+#### 27. 데이터 보관소
+- 서블릿들이 서로 협력하여 작업을 수행할 때, 데이터를 공유하는 방법으로 데이터 보관소를 사용한다.
+- 총 4가지의 ServletContext, HttpSession, ServletRequest, JspContext 보관소가 있다.
+- ServletContext는 웹 애플리케이션이 시작될 때 생성되어 웹 애플리케이션이 종료될 때까지 데이터가 유지된다.
+- HttpSession는 클라이언트의 최초 요청 시 생성되어 브라우저를 닫을 때까지 유지된다.
+- ServletRequest는 클라이언트의 요청이 들어올 때 생성되어, 클라이언트에게 응답할 때까지 유지된다.
+- JspContext는 JSP페이지를 실행하는 동안만 유지된다.
+
+---
+#### 28. ServletContext 보관소 활용
+- 서블릿마다 web.xml에 설정한 context-param의 DB연결 정보를 불러와 사용하고 있다.
+- 모든 서블릿이 공통 사용할 수 있도록 DB연결 정보를 ServletContext보관소에 담는 공용 서블릿(AppInitServlet)을 생성한다.
+- 공용 서블릿을 web.xml파일에 서블릿 선언을 해야한다.
+- 이 서블릿은 어떤 요청에 의해 생성되는 것이 아니기 때문에 load-on-startup태그로 웹 애플리케이션 시작 시 자동으로 생성되도록 했다.
+
+---
+#### 29. HttpSession 보관소 활용
+- 로그인, 로그아웃 기능을 추가하여 HttpSession 보관소 활용 해본다.
+- 로그인을 했을 때 Header.jsp에 로그인한 사용자의 이름이 나타나고, 로그아웃 버튼을 통해 HttpSession 보관소에 들어있는 사용자를 삭제한다.
+
+---
+#### 30. ServletRequest 보관소 활용
+- 로그인, 회원 목록 출력 등 ServletRequest 보관소를 통해 데이터를 이미 공유시키고 있었다.
+- LoginServlet와 LogInForm.jsp 사이에서 doGet()의 매개변수를 그대로 넘겨주고 있다.
 ```java
-package lesson02.filters;
-
-import java.io.IOException;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
-public class CharacterEncodingFilter implements Filter {
-	FilterConfig filterConfig;
-	
-	@Override
-	public void destroy() {}
-
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
-
-		// 서블릿이 실행되기 전에 해야 할 작업
-		request.setCharacterEncoding("UTF-8");
-
-		// 다음 필터 실행
-		chain.doFilter(request, response);
-		
-		// 서블릿이 실행되기 후에 해야 할 작업
-		
+@Override
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		RequestDispatcher rd = request.getRequestDispatcher("/auth/LogInForm.jsp");
+		rd.forward(request, response);
 	}
-
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		this.filterConfig = filterConfig;
-	}
-
-}
-
 ```
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>JavaWeb</display-name>  
-  (중략...)
-  
-  <!-- 필터 선언 -->
-  <filter>
-    <filter-name>CharacterEncodingFilter</filter-name>
-    <filter-class>lesson02.filters.CharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
-  </filter>
-  <!-- 필터 URL 매핑 -->
-  <filter-mapping>
-    <filter-name>CharacterEncodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
 
-  (중략...)
-</web-app>
-```
+---
+#### 31. JspContext 보관소 활용
+- JspContext 보관소는 JSP 페이지를 실행할 때 생성되고, 완료되면 사라진다.
+- JSP 페이지 내부에서만 사용될 데이터를 공유할 때 사용한다.
+- JspContext 보관소를 통해 데이터를 공유하기 원하는 자는 '커스텀 태그 핸들러'이다.
+- '커스텀 태그 핸들러'는 MVC아키텍처로 개발 시에는 별 필요가 없다.
+
+---
+#### 32. JSP 액션 태그
+- JSP 페이지를 작성할 때, 가능한 자바 코드의 삽입을 최소화하는 것이 유지 보수에 좋다.
+- 이를 위해 JSP에서는 다양한 JSP 전용 태그를 제공하고 있으며 이 태그 집합을 'JSP 액선'이라 한다.
+
+---
+#### 33. JSP 액션 태그의 사용
+- 뷰 컴포넌트(.jsp)에서 자바 코드를 JSP 액션 태그로 수정한다.
+- jsp:useBean 액션 태그는 application, session, request, page 보관소에 저장된 자바 객체를 꺼낼 수 있다.
+- 만약 보관소에 저장된 객체가 없는 경우 새로 생성하여 해당 보관소에 저장한다.
+- 그 이유로 Header.jsp에서 로그인 여부를 Member객체의 존재 여부가 아니라 Member.getEamil()로 수정했다.
 
 ---
