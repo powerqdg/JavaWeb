@@ -304,3 +304,20 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - 그 이유로 Header.jsp에서 로그인 여부를 Member객체의 존재 여부가 아니라 Member.getEamil()로 수정했다.
 
 ---
+#### 34. EL 표기법
+- EL(Expression Language)은 콤마(,)와 대괄호([])을 사용하여 자바 빈의 프로퍼티나 맵, 리스트, 배열의 값을 보다 쉽게 꺼내게 해주는 기술이다.
+- 스태틱(static)으로 선언된 메서드를 호출할 수도 있다.
+- EL은 ${}와 #{}를 사용하여 값을 표현한다.
+- ${}은 '즉시 적용(immediate evalluation)', #{}은 '지연 적용(deferred evaluation)'이라 한다.
+- #{}은 JSF(JavaServer Faces)기술에서 UI를 만들 때 많이 사용한다.
+- ${}은 JSP가 실행될 때 JSP페이지에 즉시 반영된다.
+- #{}은 시스템에서 필요하다고 판단될 때 그 값을 사용한다.
+- 이런 이유로 #{}은은 객체 속성에서 값을 꺼내기보다는, 사용자가 입력한 값을 객체의 속성에 담는 용도로 많이 사용한다.
+- ELeh jsp:useBean태그처럼 네 군데 보관소에서 값을 꺼낼 수 있다.
+- 다만 다른 점은 EL로는 객체를 생성할 수 없다. 즉, 객체를 찾다가 없으면 null을 반환한다.
+  pageScope        -> JspContext
+  requestScope     -> ServletRequest
+  sessionScope     -> HttpSession
+  applicationScope -> ServletContext
+
+---
