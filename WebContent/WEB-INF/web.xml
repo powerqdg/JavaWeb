@@ -2,33 +2,22 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>JavaWeb</display-name>
   
-  <!-- 서블릿 선언 -->
-  <servlet>
-    <servlet-name>update</servlet-name>
-    <servlet-class>lesson02.servlets.MemberUpdateServlet</servlet-class>
-    <init-param>
-      <param-name>driver</param-name>
-      <param-value>oracle.jdbc.driver.OracleDriver</param-value>
-    </init-param>
-    <init-param>
-      <param-name>url</param-name>
-      <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
-    </init-param>
-    <init-param>
-      <param-name>username</param-name>
-      <param-value>scott</param-value>
-    </init-param>
-    <init-param>
-      <param-name>password</param-name>
-      <param-value>tiger</param-value>
-    </init-param>
-  </servlet>
-  
-  <!-- 서블릿 매핑 -->
-  <servlet-mapping>
-    <servlet-name>update</servlet-name>
-    <url-pattern>/member/update</url-pattern>
-  </servlet-mapping>
+  <context-param>
+    <param-name>driver</param-name>
+    <param-value>oracle.jdbc.driver.OracleDriver</param-value>
+  </context-param>
+  <context-param>
+    <param-name>url</param-name>
+    <param-value>jdbc:oracle:thin:@localhost:1521:orcl</param-value>
+  </context-param>
+  <context-param>
+    <param-name>username</param-name>
+    <param-value>scott</param-value>
+  </context-param>
+  <context-param>
+    <param-name>password</param-name>
+    <param-value>tiger</param-value>
+  </context-param>
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>

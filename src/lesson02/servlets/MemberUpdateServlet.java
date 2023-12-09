@@ -7,12 +7,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -23,11 +25,12 @@ public class MemberUpdateServlet extends HttpServlet {
 		ResultSet rs = null;
 		
 		try {
-			Class.forName(this.getInitParameter("driver"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
 			conn = DriverManager.getConnection(
-					this.getInitParameter("url"),
-					this.getInitParameter("username"),
-					this.getInitParameter("password"));
+					sc.getInitParameter("url"),
+					sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("SELECT MNO, EMAIL, PWD, MNAME, CRE_DATE, MOD_DATE FROM MEMBERS WHERE MNO = ?");
 			stmt.setInt(1, Integer.parseInt(request.getParameter("mno")));
 			rs = stmt.executeQuery();
@@ -57,23 +60,24 @@ public class MemberUpdateServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		
 		try {
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl", "scott", "tiger");
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(
+					sc.getInitParameter("url"),
+					sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 			stmt = conn.prepareStatement("UPDATE MEMBERS SET MNAME = ?, EMAIL = ?, MOD_DATE = SYSDATE WHERE MNO = ?");
 			stmt.setString(1, request.getParameter("mname"));
 			stmt.setString(2, request.getParameter("email"));
 			stmt.setInt(3, Integer.parseInt(request.getParameter("mno")));
-			int cnt = stmt.executeUpdate();
+			stmt.executeUpdate();
 			
-			if (cnt > 0) {
-				response.sendRedirect("list");
-			} else {
-				throw new Error("수정하는데 문제가 발생했습니다.");
-			}
+			response.sendRedirect("list");
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
