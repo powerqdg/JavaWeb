@@ -26,10 +26,10 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			response.setContentType("text/html;charset=UTF-8");
 			
 			request.setAttribute("members", memberDao.selectList());
 			
+			response.setContentType("text/html;charset=UTF-8");
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
 			rd.include(request, response);
 		} catch (Exception e) {

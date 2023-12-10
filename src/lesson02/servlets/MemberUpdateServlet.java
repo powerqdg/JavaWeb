@@ -25,11 +25,11 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			response.setContentType("text/html;charset=UTF-8");
 			
 			int mno = Integer.parseInt(request.getParameter("mno"));
 			request.setAttribute("member", memberDao.selectOne(mno));
 			
+			response.setContentType("text/html;charset=UTF-8");
 			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdate.jsp");
 			rd.forward(request, response);
 		} catch (Exception e) {
