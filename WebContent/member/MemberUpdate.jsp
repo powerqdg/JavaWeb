@@ -10,7 +10,8 @@
 <jsp:include page="/Header.jsp"/>
 <h1>회원수정</h1>
 <form action="update" method="post">
-<label for="mno">번호: ${requestScope.member.mno}</label><br>
+<label for="mno">번호: </label>
+<input id="mno" type="text" name="mno" value='${requestScope.member.mno}' readonly><br>
 <label for="mname">이름: </label>
 <input id="mname" type="text" name="mname" value='${requestScope.member.mname}'><br>
 <label for="email">이메일: </label>

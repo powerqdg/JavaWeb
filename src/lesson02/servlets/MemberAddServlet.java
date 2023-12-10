@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lesson02.dao.MemberDao;
+import lesson02.vo.Member;
+
 @WebServlet("/member/add")
 public class MemberAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,18 +28,17 @@ public class MemberAddServlet extends HttpServlet {
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// request.setCharacterEncoding("UTF-8");
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		
 		try {
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
-			stmt = conn.prepareStatement("INSERT INTO MEMBERS VALUES(MNO_SEQ.nextVal, ?, ?, ?, SYSDATE, SYSDATE)");
-			stmt.setString(1, request.getParameter("email"));
-			stmt.setString(2, request.getParameter("password"));
-			stmt.setString(3, request.getParameter("mname"));
-			stmt.executeUpdate();
+			Connection conn = (Connection)sc.getAttribute("conn");
+			
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
+			
+			memberDao.insert(new Member()
+					.setEmail(request.getParameter("email"))
+					.setPassword(request.getParameter("password"))
+					.setMname(request.getParameter("mname")));
 			
 			response.sendRedirect("list");
 		} catch (Exception e) {
@@ -44,9 +46,6 @@ public class MemberAddServlet extends HttpServlet {
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (stmt != null) stmt.close();} catch (Exception e) {}
 		}
-		
 	}
 }

@@ -12,21 +12,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lesson02.dao.MemberDao;
+
 @WebServlet("/member/delete")
 public class MemberDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		
 		try {
 			ServletContext sc = this.getServletContext();
-			conn = (Connection)sc.getAttribute("conn");
-			stmt = conn.prepareStatement("DELETE FROM MEMBERS WHERE MNO = ?");
-			stmt.setInt(1, Integer.parseInt(request.getParameter("mno")));
-			stmt.executeUpdate();
+			Connection conn = (Connection)sc.getAttribute("conn");
+			
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnection(conn);
+			
+			memberDao.delete(Integer.parseInt(request.getParameter("mno")));
 			
 			response.sendRedirect("list");
 		} catch (Exception e) {
@@ -34,8 +35,6 @@ public class MemberDeleteServlet extends HttpServlet {
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
-		} finally {
-			try {if (stmt != null) stmt.close();} catch (Exception e) {}
 		}
 	}
 }
