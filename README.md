@@ -321,3 +321,34 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
   applicationScope -> ServletContext
 
 ---
+#### 35. JSTL 적용
+- EL과 더불어 JSTL을 사용하면 JSP 페이지에서 자바 코드를 완전히 제거할 수 있다.
+- JSTL태그를 사용하려면 'JSTL API'와 'JSTL Implementation'를 준비해야 한다.
+
+---
+#### 36. DAO만들기
+- 서블릿이 하는 일 중에서 DB와 연동하여 데이터를 처리하는 부분을 분리해본다.
+- DAO는 보통 하나의 DB테이블이나 DB뷰에 대응한다.
+- DAO는 DB나 파일, 메모리 등을 이용하여 데이터를 CRUD하는 역할을 수행한다.
+- 회원 등록, 목록 조회, 수정, 삭제, 로그인 서블릿에 DAO를 적용하였다.
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
