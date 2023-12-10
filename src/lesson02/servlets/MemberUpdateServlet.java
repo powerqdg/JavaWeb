@@ -24,11 +24,8 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection)sc.getAttribute("conn");
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			response.setContentType("text/html;charset=UTF-8");
-			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
 			
 			int mno = Integer.parseInt(request.getParameter("mno"));
 			request.setAttribute("member", memberDao.selectOne(mno));
@@ -47,10 +44,7 @@ public class MemberUpdateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection)sc.getAttribute("conn");
-			
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnection(conn);
+			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
 			
 			memberDao.update(new Member()
 					.setMname(request.getParameter("mname"))
