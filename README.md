@@ -333,9 +333,24 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - 회원 등록, 목록 조회, 수정, 삭제, 로그인 서블릿에 DAO를 적용하였다.
 
 ---
+#### 37. 리스너(Listener)
+- ServletContextListener 인터페이스를 구현해서 웹 애플리케이션의 시작과 종료 이벤트를 처리한다.
+- 시작은 contextInitialized()에 작성하고 종료는 contextDestroyed()에 작성한다.
+- web.xml에 AppInitServlet 서블릿 선언을 삭제하고, 리스너 정보를 등록한다.
 
+```xml
+<!-- 삭제 -->
+<servlet>
+  <servlet-name>AppInitServlet</servlet-name>
+  <servlet-class>lesson02.servlets.AppInitServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
 
-
+<!-- 등록 -->
+<listener>
+  <listener-class>lesson02.listener.ContextLoaderListener</listener-class>
+</listener>
+```
 
 
 
