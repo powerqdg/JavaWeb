@@ -313,7 +313,7 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - ${}은 JSP가 실행될 때 JSP페이지에 즉시 반영된다.
 - #{}은 시스템에서 필요하다고 판단될 때 그 값을 사용한다.
 - 이런 이유로 #{}은은 객체 속성에서 값을 꺼내기보다는, 사용자가 입력한 값을 객체의 속성에 담는 용도로 많이 사용한다.
-- ELeh jsp:useBean태그처럼 네 군데 보관소에서 값을 꺼낼 수 있다.
+- EL도 jsp:useBean태그처럼 네 군데 보관소에서 값을 꺼낼 수 있다.
 - 다만 다른 점은 EL로는 객체를 생성할 수 없다. 즉, 객체를 찾다가 없으면 null을 반환한다.
   pageScope        -> JspContext
   requestScope     -> ServletRequest
