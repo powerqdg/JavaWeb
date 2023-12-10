@@ -313,11 +313,57 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - ${}은 JSP가 실행될 때 JSP페이지에 즉시 반영된다.
 - #{}은 시스템에서 필요하다고 판단될 때 그 값을 사용한다.
 - 이런 이유로 #{}은은 객체 속성에서 값을 꺼내기보다는, 사용자가 입력한 값을 객체의 속성에 담는 용도로 많이 사용한다.
-- ELeh jsp:useBean태그처럼 네 군데 보관소에서 값을 꺼낼 수 있다.
-- 다만 다른 점은 EL로는 객체를 생성할 수 없다. 즉, 객체를 찾다가 없으면 null을 반환한다.
-  pageScope        -> JspContext
-  requestScope     -> ServletRequest
-  sessionScope     -> HttpSession
+- EL도 jsp:useBean태그처럼 네 군데 보관소에서 값을 꺼낼 수 있다.
+- 다만 다른 점은 EL로는 객체를 생성할 수 없다. 즉, 객체를 찾다가 없으면 null을 반환한다.<br>
+  pageScope        -> JspContext<br>
+  requestScope     -> ServletRequest<br>
+  sessionScope     -> HttpSession<br>
   applicationScope -> ServletContext
 
 ---
+#### 35. JSTL 적용
+- EL과 더불어 JSTL을 사용하면 JSP 페이지에서 자바 코드를 완전히 제거할 수 있다.
+- JSTL태그를 사용하려면 'JSTL API'와 'JSTL Implementation'를 준비해야 한다.
+
+---
+#### 36. DAO만들기
+- 서블릿이 하는 일 중에서 DB와 연동하여 데이터를 처리하는 부분을 분리해본다.
+- DAO는 보통 하나의 DB테이블이나 DB뷰에 대응한다.
+- DAO는 DB나 파일, 메모리 등을 이용하여 데이터를 CRUD하는 역할을 수행한다.
+- 회원 등록, 목록 조회, 수정, 삭제, 로그인 서블릿에 DAO를 적용하였다.
+
+---
+#### 37. 리스너(Listener)
+- ServletContextListener 인터페이스를 구현해서 웹 애플리케이션의 시작과 종료 이벤트를 처리한다.
+- 시작은 contextInitialized()에 작성하고 종료는 contextDestroyed()에 작성한다.
+- web.xml에 AppInitServlet 서블릿 선언을 삭제하고, 리스너 정보를 등록한다.
+
+```xml
+<!-- 삭제 -->
+<servlet>
+  <servlet-name>AppInitServlet</servlet-name>
+  <servlet-class>lesson02.servlets.AppInitServlet</servlet-class>
+  <load-on-startup>1</load-on-startup>
+</servlet>
+
+<!-- 등록 -->
+<listener>
+  <listener-class>lesson02.listener.ContextLoaderListener</listener-class>
+</listener>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
