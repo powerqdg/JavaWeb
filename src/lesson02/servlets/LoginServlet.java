@@ -35,7 +35,7 @@ public class LoginServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			conn = (Connection)sc.getAttribute("conn");
-			stmt = conn.prepareStatement("SELECT MNAME FROM MEMBERS WHERE EMAIL = ? AND PWD = ?");
+			stmt = conn.prepareStatement("SELECT EMAIL, MNAME FROM MEMBERS WHERE EMAIL = ? AND PWD = ?");
 			stmt.setString(1, request.getParameter("email"));
 			stmt.setString(2, request.getParameter("password"));
 			rs = stmt.executeQuery();
@@ -43,6 +43,7 @@ public class LoginServlet extends HttpServlet {
 			if (rs.next()) {
 				HttpSession session = request.getSession();
 				session.setAttribute("member", new Member()
+						.setEmail(rs.getString("EMAIL"))
 						.setMname(rs.getString("MNAME")));
 				response.sendRedirect("../member/list");
 			} else {
