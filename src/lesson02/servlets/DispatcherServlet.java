@@ -12,12 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lesson02.controls.Controller;
-import lesson02.controls.LoginController;
-import lesson02.controls.LogoutController;
-import lesson02.controls.MemberAddController;
-import lesson02.controls.MemberDeleteController;
-import lesson02.controls.MemberListController;
-import lesson02.controls.MemberUpdateController;
 import lesson02.vo.Member;
 
 
@@ -34,14 +28,11 @@ public class DispatcherServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 			
 			HashMap<String, Object> model = new HashMap<String, Object>();
-			model.put("memberDao", sc.getAttribute("memberDao"));
+			model.put("session", request.getSession());
 			
-			Controller pageController = null;
+			Controller pageController = (Controller)sc.getAttribute(servletPath);
 			
-			if ("/member/list.do".equals(servletPath)) {
-				pageController = new MemberListController();
-			} else if ("/member/add.do".equals(servletPath)) {
-				pageController = new MemberAddController();
+			if ("/member/add.do".equals(servletPath)) {
 				if (request.getParameter("email") != null) {
 					model.put("member", new Member()
 							.setEmail(request.getParameter("email"))
@@ -49,7 +40,6 @@ public class DispatcherServlet extends HttpServlet {
 							.setPassword(request.getParameter("password")));
 				}
 			} else if ("/member/update.do".equals(servletPath)) {
-				pageController = new MemberUpdateController();
 				if (request.getParameter("email") == null) {
 					model.put("mno", Integer.parseInt(request.getParameter("mno")));
 				} else {
@@ -59,19 +49,13 @@ public class DispatcherServlet extends HttpServlet {
 							.setMname(request.getParameter("mname")));
 				}
 			} else if ("/member/delete.do".equals(servletPath)) {
-				pageController = new MemberDeleteController();
 				model.put("mno", Integer.parseInt(request.getParameter("mno")));
 			} else if ("/auth/login.do".equals(servletPath)) {
-				pageController = new LoginController();
-				model.put("session",request.getSession());
 				if (request.getParameter("email") != null) {
 					model.put("loginInfo", new Member()
 							.setEmail(request.getParameter("email"))
 							.setPassword(request.getParameter("password")));
 				}
-			} else if ("/auth/logout.do".equals(servletPath)) {
-				pageController = new LogoutController();
-				model.put("session",request.getSession());
 			}
 			
 			
