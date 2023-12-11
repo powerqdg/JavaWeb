@@ -359,9 +359,16 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - DB커넥션 객체를 생성하는데 DB는 사용자 인증과 권한 검사를 수행하고 요청 처리를 위한 준비 작업을 하느라 지연이 발생한다.
 - DB커넥션풀을 직접 생성해보면서 어떤 원리로 이루어지는지 확인한다.
 
+--- 
+#### 39. javax.sql 패키지, DataSource
+- javax.sql 패키지는 java.sql의 패키지의 기능을 보조하기 위해 만든 확장 패키지이다.
+- 서버쪽 데이터 소스에 대한 접근을 쉽게 하고, 다양한 방법으로 데이터를 다룰 수 있는 API를 제공한다.
+- DriverManager를 대체할 수 있는 DataSource인터페이스 제공
+- Connection 및 Statement 객체의 풀링
+- 분산 트랜잭션 처리
+- Rowsets의 지원
+  
 ---
-
-
 
 
 
