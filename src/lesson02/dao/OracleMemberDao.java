@@ -8,8 +8,10 @@ import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
+import lesson02.annotation.Component;
 import lesson02.vo.Member;
 
+@Component("memberDao")
 public class OracleMemberDao implements MemberDao {
 	DataSource ds;
 	

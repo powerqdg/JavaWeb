@@ -2,8 +2,10 @@ package lesson02.controls;
 
 import java.util.Map;
 
+import lesson02.annotation.Component;
 import lesson02.dao.MemberDao;
 
+@Component("/member/list.do")
 public class MemberListController implements Controller {
 	MemberDao memberDao;
 	
