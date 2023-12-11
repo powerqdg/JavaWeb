@@ -1,10 +1,6 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -15,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lesson02.dao.MemberDao;
-import lesson02.vo.Member;
 
 @WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
@@ -26,16 +21,10 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			
 			request.setAttribute("members", memberDao.selectList());
-			
-			response.setContentType("text/html;charset=UTF-8");
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
-			rd.include(request, response);
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
 		} catch (Exception e) {
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }

@@ -1,8 +1,6 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -21,8 +19,7 @@ public class MemberAddServlet extends HttpServlet {
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/member/MemberAdd.jsp");
-		rd.forward(request, response);
+		request.setAttribute("viewUrl", "/member/MemberAdd.jsp");
 	}
 	
 	@Override
@@ -30,18 +27,10 @@ public class MemberAddServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			
-			memberDao.insert(new Member()
-					.setEmail(request.getParameter("email"))
-					.setPassword(request.getParameter("password"))
-					.setMname(request.getParameter("mname")));
-			
-			response.sendRedirect("list");
+			memberDao.insert((Member)request.getAttribute("member"));
+			request.setAttribute("viewUrl", "redirect:list.do");
 		} catch (Exception e) {
-			// throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }

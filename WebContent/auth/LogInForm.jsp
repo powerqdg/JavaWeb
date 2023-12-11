@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="/Header.jsp"/>
 <h1>로그인</h1>
-<form action="login" method="post">
+<form action="login.do" method="post">
 <label for="email">이메일: </label>
 <input id="email" type="text" name="email"><br>
 <label for="password">비밀번호: </label>

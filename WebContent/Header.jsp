@@ -6,11 +6,11 @@ SPMS(Simple Project Management System)
 <span style="float: right;">
 <c:choose>
   <c:when test="${empty sessionScope.member.email}">
-    <a href="../auth/login" style="color:#ffffff">로그인</a>
+    <a href="../auth/login.do" style="color:#ffffff">로그인</a>
   </c:when>
   <c:otherwise>
     ${sessionScope.member.mname}
-    <a href="../auth/logout" style="color:#ffffff">로그아웃</a>
+    <a href="../auth/logout.do" style="color:#ffffff">로그아웃</a>
   </c:otherwise>
 </c:choose>
 </span>

@@ -1,9 +1,6 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -25,18 +22,11 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			
 			int mno = Integer.parseInt(request.getParameter("mno"));
 			request.setAttribute("member", memberDao.selectOne(mno));
-			
-			response.setContentType("text/html;charset=UTF-8");
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberUpdate.jsp");
-			rd.forward(request, response);
+			request.setAttribute("viewUrl", "/member/MemberUpdate.jsp");
 		} catch (Exception e) {
-			// throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 	
@@ -45,18 +35,10 @@ public class MemberUpdateServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			
-			memberDao.update(new Member()
-					.setMname(request.getParameter("mname"))
-					.setEmail(request.getParameter("email"))
-					.setMno(Integer.parseInt(request.getParameter("mno"))));
-			
-			response.sendRedirect("list");
+			memberDao.update((Member)request.getAttribute("member"));
+			request.setAttribute("viewUrl", "redirect:list.do");
 		} catch (Exception e) {
-			// throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }

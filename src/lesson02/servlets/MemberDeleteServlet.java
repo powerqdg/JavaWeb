@@ -1,8 +1,6 @@
 package lesson02.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -23,15 +21,10 @@ public class MemberDeleteServlet extends HttpServlet {
 		try {
 			ServletContext sc = this.getServletContext();
 			MemberDao memberDao = (MemberDao)sc.getAttribute("memberDao");
-			
 			memberDao.delete(Integer.parseInt(request.getParameter("mno")));
-			
-			response.sendRedirect("list");
+			request.setAttribute("viewUrl", "redirect:list.do");
 		} catch (Exception e) {
-			// throw new ServletException(e);
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }

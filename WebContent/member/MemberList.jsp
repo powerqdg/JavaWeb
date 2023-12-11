@@ -10,14 +10,14 @@
 <body>
 <jsp:include page="/Header.jsp"/>
 <h1>회원목록</h1>
-<p><a href="add">신규회원</a></p>
+<p><a href="add.do">신규회원</a></p>
 <c:forEach var="member" items="${requestScope.members}">
 ${member.mno}, 
-<a href="update?mno=${member.mno}">${member.mname}</a>,
+<a href="update.do?mno=${member.mno}">${member.mname}</a>,
 ${member.email}, 
 ${member.creDate}, 
 ${member.modDate}, 
-<a href="delete?mno=${member.mno}">[삭제]</a><br>  
+<a href="delete.do?mno=${member.mno}">[삭제]</a><br>  
 </c:forEach>
 <jsp:include page="/Tail.jsp"/>
 </body>

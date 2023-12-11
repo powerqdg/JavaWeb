@@ -9,7 +9,7 @@
 <body>
 <jsp:include page="/Header.jsp"/>
 <h1>회원수정</h1>
-<form action="update" method="post">
+<form action="update.do" method="post">
 <label for="mno">번호: </label>
 <input id="mno" type="text" name="mno" value='${requestScope.member.mno}' readonly><br>
 <label for="mname">이름: </label>
