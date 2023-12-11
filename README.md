@@ -379,7 +379,11 @@ out.println("<meta http-equiv='Refresh' content='1;charset=UTF-8'>");
 - 페이지 컨트롤러에서는 페이지 관련 작업만하고, 리턴값으면 뷰Url을 스트링 값으로 넘겨준다.
 - 컨트롤러 인터페이스를 만들어 호출 규칙을 작성하여 페이지 컨트롤러가 인터페이스에 따라 일을 할 수 있도록 했다.
 
+---
+#### 42. MemberDao공급처를 다변화
+- 인터페이스를 활용하여 OracleMemberDao, MySqlMemberDao, ... 등 DB가 변경되었을 때도 유연하게 대처할 수 있도록 변경
 
+---
 
 
 
