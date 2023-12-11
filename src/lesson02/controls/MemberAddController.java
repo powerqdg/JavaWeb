@@ -2,10 +2,11 @@ package lesson02.controls;
 
 import java.util.Map;
 
+import lesson02.bind.DataBinding;
 import lesson02.dao.MemberDao;
 import lesson02.vo.Member;
 
-public class MemberAddController implements Controller {
+public class MemberAddController implements Controller, DataBinding {
 	MemberDao memberDao;
 	
 	public MemberAddController setMemberDao(MemberDao memberDao) {
@@ -14,9 +15,16 @@ public class MemberAddController implements Controller {
 	}
 	
 	@Override
+	public Object[] getDataBinders() {
+		return new Object[] {
+				"member", lesson02.vo.Member.class
+		};
+	}
+	
+	@Override
 	public String execute(Map<String, Object> model) throws Exception {
 		Member member = (Member)model.get("member");
-		if (member == null) {
+		if (member.getEmail() == null) {
 			return "/member/MemberAdd.jsp";
 		} else {
 			memberDao.insert(member);

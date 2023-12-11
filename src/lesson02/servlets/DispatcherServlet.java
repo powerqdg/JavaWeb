@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lesson02.bind.DataBinding;
+import lesson02.bind.ServletRequestDataBinder;
 import lesson02.controls.Controller;
-import lesson02.vo.Member;
 
 
 @WebServlet("*.do")
@@ -32,32 +33,9 @@ public class DispatcherServlet extends HttpServlet {
 			
 			Controller pageController = (Controller)sc.getAttribute(servletPath);
 			
-			if ("/member/add.do".equals(servletPath)) {
-				if (request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setEmail(request.getParameter("email"))
-							.setMname(request.getParameter("mname"))
-							.setPassword(request.getParameter("password")));
-				}
-			} else if ("/member/update.do".equals(servletPath)) {
-				if (request.getParameter("email") == null) {
-					model.put("mno", Integer.parseInt(request.getParameter("mno")));
-				} else {
-					model.put("member", new Member()
-							.setMno(Integer.parseInt(request.getParameter("mno")))
-							.setEmail(request.getParameter("email"))
-							.setMname(request.getParameter("mname")));
-				}
-			} else if ("/member/delete.do".equals(servletPath)) {
-				model.put("mno", Integer.parseInt(request.getParameter("mno")));
-			} else if ("/auth/login.do".equals(servletPath)) {
-				if (request.getParameter("email") != null) {
-					model.put("loginInfo", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPassword(request.getParameter("password")));
-				}
+			if (pageController instanceof DataBinding) {
+				prepareRequestData(request, model, (DataBinding)pageController);
 			}
-			
 			
 			String viewUrl = pageController.execute(model);
 			
@@ -78,6 +56,19 @@ public class DispatcherServlet extends HttpServlet {
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
+		}
+	}
+	
+	private void prepareRequestData(HttpServletRequest request, HashMap<String, Object> model, DataBinding dataBinding) throws Exception {
+		Object[] dataBinders = dataBinding.getDataBinders();
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObj = null;
+		for (int i = 0; i < dataBinders.length; i+=2) {
+			dataName = (String)dataBinders[i];
+			dataType = (Class<?>)dataBinders[i + 1];
+			dataObj = ServletRequestDataBinder.bind(request, dataType, dataName);
+			model.put(dataName, dataObj);
 		}
 	}
 }
